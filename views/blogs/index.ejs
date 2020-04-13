@@ -1,10 +1,10 @@
-<%- include('partials/header'); -%>
+<%- include('../partials/header'); -%>
 <h1>All Blogs</h1>
 
 
 <% blogs.forEach(function(blog){ %>
 <div class="container" style="display: flex; justify-content: center; align-items: center;">
-    <div class="card mb-4" style="width: 700px; height:40vh;">
+    <div class="card mb-4" style="width: 700px; height40vh;">
         <div class="row no-gutters">
             <div class="col-md-4">
                 <img src="<%= blog.image %>" class="card-img" alt="Image here"
@@ -12,7 +12,7 @@
             </div>
             <div class="col-md-8">
                 <div class="card-body">
-                    <h5 class="card-title"><%= blog.title %></h5>
+                    <h5 class="card-title"><%= blog.title.substring(0, 400) %></h5>
                     <p class="card-text"><%= blog.body.substring(0, 150) %></p>
                     <p class="card-text">
                         <small class="text-muted">Last updated <%= blog.created.toDateString()%></small>
@@ -26,4 +26,4 @@
 <% }); %>
 
 
-<%- include('partials/footer'); -%>
+<%- include('../partials/footer'); -%>

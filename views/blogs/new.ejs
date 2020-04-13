@@ -1,30 +1,28 @@
-<%- include('partials/header'); -%>
+<%- include('../partials/header'); -%>
 
-<h1>EDIT BLOG</h1>
-
+<h1>NEW BLOG</h1>
 <div class="container" style="margin: 0 auto; float:none;">
-    <form action="/blogs/<%= blog._id%>?_method=PUT" method="POST">
+    <form action="/blogs" method="POST">
         <div class="form">
             <div class="form-group col-md-4">
                 <label for="title">Title</label>
-                <input type="text" name="blog[title]" class="form-control" id="title" value="<%= blog.title%>">
+                <input type="text" name="blog[title]" class="form-control" id="title" placeholder="Enter Title">
             </div>
             <div class="form-group col-md-4">
                 <label for="image">Image Url</label>
-                <input type="text" name="blog[image]" class="form-control" id="image" value="<%= blog.image%>">
+                <input type="text" name="blog[image]" class="form-control" id="image" placeholder="Enter Image Url">
             </div>
             <div class="form-group col-md-4">
                 <label for="body">Post Content</label>
-                <textarea name="blog[body]" class="form-control" id="body" cols="58" rows="6"><%= blog.body%></textarea>
+                <!-- <input type="text" name="blog[body]" class="form-control" id="body" placeholder=""> class="form-control" -->
+                <textarea name="blog[body]" class="form-control" id="body" cols="58" rows="6"></textarea>
             </div>
             <div class="form-group col-md-3">
                 <input type="submit" class="btn btn-primary" name="submit">
             </div>
         </div>
     </form>
-</div>s
+</div>
 
 
-
-
-<%- include('partials/footer'); -%>
+<%- include('../partials/footer'); -%>

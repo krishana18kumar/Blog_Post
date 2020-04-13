@@ -1,0 +1,32 @@
+<%- include('partials/header'); -%>
+
+<h1>SHOW BLOG</h1>
+
+<!-- <div><%= blog.title %></div>
+<div><img src="<%= blog.image %>" alt="img here" style="width: 200px;"></div>
+<div><%= blog.body %></div>
+<div>
+    <p>Last Updated on <%= blog.created %></p>
+</div> -->
+
+<div class="container" style="display: flex; justify-content: center; align-items: center;">
+
+    <div class="card" style="max-width: 500px;">
+        <div class="card-body">
+            <h3 class="card-title"><%= blog.title %></h3>
+        </div>
+        <img src="<%= blog.image %>" class="card-img" alt="Image here"
+            style=" max-width:500px ; max-height: 300px; object-fit: cover;">
+        <div class="card-body">
+            <p class="card-text"><%= blog.body %></p>
+            <p class="card-text"><small class="text-muted">Last updated <%= blog.created.toDateString() %></small></p>
+        </div>
+        <form action="/blogs/<%= blog._id%>?_method=DELETE" method="POST"
+            style="display: flex; justify-content: space-around;">
+            <a class="btn btn-success" href="/blogs/<%= blog._id%>/edit" role="button">Edit Blog</a>
+            <a class="btn btn-outline-primary" href="/blogs" role="button">Go Back</a>
+            <button class="btn btn-danger">Delete Blog</button>
+        </form>
+    </div>
+</div>
+<%- include('partials/footer'); -%>

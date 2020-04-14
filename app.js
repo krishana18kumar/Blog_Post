@@ -9,7 +9,7 @@ var User = require("./models/user");
 var seedDB = require("./seeds.js");
 
 
-seedDB();
+//seedDB();
 
 //app CONFIG
 mongoose.connect("mongodb://localhost:27017/blog_post_v1", {
@@ -153,6 +153,6 @@ app.post("/blogs/:id/comments", function (req, res) {
   });
 });
 
-app.listen(3000, function () {
+app.listen(5500, function () {
   console.log("blog_post server has started");
 });

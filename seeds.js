@@ -1,7 +1,6 @@
 var mongoode = require("mongoose");
 var Blog = require("./models/blogs");
 var Comment = require("./models/comment");
-
 data = [
     {
         image: "https://images.pexels.com/photos/3214958/pexels-photo-3214958.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
@@ -36,6 +35,7 @@ function seedDB() {
             console.log(err);
         };
         console.log("Removed All Blogs");
+
         //add blogs
         data.forEach(function (seed) {
             Blog.create(seed, function (err, blog) {

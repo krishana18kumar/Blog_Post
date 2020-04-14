@@ -153,6 +153,27 @@ app.post("/blogs/:id/comments", function (req, res) {
   });
 });
 
+//=========================
+// AUTHENTICATION ROUTES
+//=========================
+
+// REGISTER ROUTES
+
+app.get("/register", function (req, res) {
+  res.render("register");
+});
+
+
+
+
+
+
+
+
+
+
+
+
 app.listen(5500, function () {
   console.log("blog_post server has started");
 });

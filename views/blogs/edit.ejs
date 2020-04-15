@@ -7,15 +7,15 @@
         <div class="form">
             <div class="form-group col-md-4">
                 <label for="title">Title</label>
-                <input type="text" name="blog[title]" class="form-control" id="title" value="<%= blog.title%>">
+                <input type="text" name="title" class="form-control" id="title" value="<%= blog.title%>">
             </div>
             <div class="form-group col-md-4">
                 <label for="image">Image Url</label>
-                <input type="text" name="blog[image]" class="form-control" id="image" value="<%= blog.image%>">
+                <input type="text" name="image" class="form-control" id="image" value="<%= blog.image%>">
             </div>
             <div class="form-group col-md-4">
                 <label for="body">Post Content</label>
-                <textarea name="blog[body]" class="form-control" id="body" cols="58" rows="6"><%= blog.body%></textarea>
+                <textarea name="body" class="form-control" id="body" cols="58" rows="6"><%= blog.body%></textarea>
             </div>
             <div class="form-group col-md-3">
                 <input type="submit" class="btn btn-primary" name="submit">

@@ -19,7 +19,7 @@ var blogRoutes = require("./routes/blogs");
 var commentRoutes = require("./routes/comments");
 var authRoutes = require("./routes/auths");
 
-
+//SEED THE DATABASE
 // seedDB();
 
 //app CONFIG

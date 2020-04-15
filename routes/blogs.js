@@ -23,7 +23,18 @@ router.get("/", function (req, res) {
 // CREATE ROUTE (ADD NEW POST TO DATABASE )
 
 router.post("/", isLoggedIn, function (req, res) {
-    Blog.create(req.body.blog, function (err, newlyblog) {
+    var title = req.body.title;
+    var image = req.body.image;
+    var body = req.body.body;
+    author = {
+        id: req.user._id,
+        username: req.user.username
+    }
+    var newBlog = {
+        title: title, image: image, body: body, author: author
+
+    };
+    Blog.create(newBlog, function (err, newlyblog) {
         if (err) {
             console.log(err);
         } else {

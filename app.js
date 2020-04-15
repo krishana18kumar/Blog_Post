@@ -40,6 +40,11 @@ passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
+
+app.use(function (req, res, next) {
+  res.locals.currentUser = req.user;
+  next();
+});
 //ROUTES
 
 //================
@@ -66,7 +71,7 @@ app.get("/blogs", function (req, res) {
   });
 });
 
-app.post("/blogs", function (req, res) {
+app.post("/blogs", isLoggedIn, function (req, res) {
   Blog.create(req.body.blog, function (err, newlyblog) {
     if (err) {
       console.log(err);
@@ -79,7 +84,7 @@ app.post("/blogs", function (req, res) {
 
 // NEW BLOG OR CREATE ROUTE
 
-app.get("/blogs/new", function (req, res) {
+app.get("/blogs/new", isLoggedIn, function (req, res) {
   res.render("blogs/new");
 });
 
@@ -99,7 +104,7 @@ app.get("/blogs/:id", function (req, res) {
 
 //EDIT ROUTE
 
-app.get("/blogs/:id/edit", function (req, res) {
+app.get("/blogs/:id/edit", isLoggedIn, function (req, res) {
   Blog.findById(req.params.id, function (err, editBlog) {
     if (err) {
       console.log(err);
@@ -112,7 +117,7 @@ app.get("/blogs/:id/edit", function (req, res) {
 
 // UPDATE ROUTE
 
-app.put("/blogs/:id", function (req, res) {
+app.put("/blogs/:id", isLoggedIn, function (req, res) {
   var id = req.params.id;
   Blog.findByIdAndUpdate(id, req.body.blog, function (err, foundBlog) {
     if (err) {
@@ -126,7 +131,7 @@ app.put("/blogs/:id", function (req, res) {
 
 // DELETE ROUTE
 
-app.delete("/blogs/:id/", function (req, res) {
+app.delete("/blogs/:id/", isLoggedIn, function (req, res) {
   Blog.findByIdAndDelete(req.params.id, function (err) {
     if (err) {
       console.log(err);
@@ -142,12 +147,12 @@ app.delete("/blogs/:id/", function (req, res) {
 // =======================
 
 
-app.get("/blogs/:id/comments/new", function (req, res) {
+app.get("/blogs/:id/comments/new", isLoggedIn, function (req, res) {
   res.render("comments/new", { id: req.params.id });
 });
 
 
-app.post("/blogs/:id/comments", function (req, res) {
+app.post("/blogs/:id/comments", isLoggedIn, function (req, res) {
   Blog.findById(req.params.id, function (err, blog) {
     if (err) {
       console.log(err);
@@ -184,7 +189,6 @@ app.post("/register", function (req, res) {
     }
     passport.authenticate("local")(req, res, function () {
       res.redirect("/blogs");
-      console.log(req.body.user);
     });
   });
 });
@@ -193,13 +197,14 @@ app.post("/register", function (req, res) {
 
 app.get("/login", function (req, res) {
   res.render("login");
+  console.log("login route");
+
 });
 //app.post("/login", middleware, callback_function)
 app.post("/login", passport.authenticate("local", {
   successRedirect: "/blogs",
   failureRedirect: "/login"
 }), function (req, res) {
-  console.log(req.body.user);
 });
 
 
@@ -209,8 +214,18 @@ app.get("/logout", function (req, res) {
   res.redirect("/blogs");
 });
 
+// MIDDLEWARE  TO CHECK IS USER LOGGED IN 
+
+function isLoggedIn(req, res, next) {
+  if (req.isAuthenticated()) {
+    return next();
+  }
+  res.redirect("/login");
+}
 
 
 app.listen(3000, function () {
-  console.log("blog_post server has started");
+  console.log("blog_post_Git_version server has started");
+  console.log("Port:3000");
+
 });

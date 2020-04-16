@@ -25,11 +25,12 @@ router.get("/register", function (req, res) {
 router.post("/register", function (req, res) {
     User.register(new User({ email: req.body.email, username: req.body.username }), req.body.password, function (err, user) {
         if (err) {
-            console.log(err);
+            req.flash("error", err.message);
             return res.render("register");
         }
         passport.authenticate("local")(req, res, function () {
-            res.redirect("/blogs");
+            req.flash("success", " Welcome" + user.username + "Successfully Registered!");
+            res.redirect("back");
         });
     });
 });
@@ -47,22 +48,18 @@ router.post("/login", passport.authenticate("local", {
     successRedirect: "/blogs",
     failureRedirect: "/login"
 }), function (req, res) {
+    req.flash("error", "Invalid Username Or Wrong Password Try Again!");
+    req.flash("success", " Welcome Back " + user.username);
+
 });
 
 
 // LOGOUT ROUTE
 router.get("/logout", function (req, res) {
     req.logout();
+    req.flash("success", "Successfully Logged Out, See You Soon!");
     res.redirect("/blogs");
 });
 
-// MIDDLEWARE  TO CHECK IS USER LOGGED IN 
-
-function isLoggedIn(req, res, next) {
-    if (req.isAuthenticated()) {
-        return next();
-    }
-    res.redirect("/login");
-}
 
 module.exports = router;

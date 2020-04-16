@@ -33,12 +33,12 @@ router.post("/", middleware.isLoggedIn, function (req, res) {
     }
     var newBlog = {
         title: title, image: image, body: body, author: author
-
     };
     Blog.create(newBlog, function (err, newlyblog) {
         if (err) {
             console.log(err);
         } else {
+            req.flash("success", "Post Created");
             res.redirect("/blogs");
         }
     });
@@ -69,11 +69,7 @@ router.get("/:id", function (req, res) {
 
 router.get("/:id/edit", middleware.checkBlogAuthorization, function (req, res) {
     Blog.findById(req.params.id, function (err, editBlog) {
-        if (err) {
-            console.log(err);
-        } else {
-            res.render("blogs/edit", { blog: editBlog });
-        }
+        res.render("blogs/edit", { blog: editBlog });
     });
 });
 
@@ -84,8 +80,10 @@ router.put("/:id", middleware.checkBlogAuthorization, function (req, res) {
     var id = req.params.id;
     Blog.findByIdAndUpdate(id, req.body.blog, function (err, foundBlog) {
         if (err) {
+            req.flash("error", "Blog not in Database or cannot be Updated!")
             console.log(err);
         } else {
+            req.flash("success", "Blog Updated Successfully!");
             res.redirect("/blogs/" + req.params.id);
         }
     });
@@ -97,9 +95,10 @@ router.put("/:id", middleware.checkBlogAuthorization, function (req, res) {
 router.delete("/:id", middleware.checkBlogAuthorization, function (req, res) {
     Blog.findByIdAndDelete(req.params.id, function (err) {
         if (err) {
+            req.flash("error", "Cannot Delete Blog")
             console.log(err);
         } else {
-            console.log("Post Delete");
+            req.flash("success", "Post Delete");
             res.redirect("/blogs");
         }
     });

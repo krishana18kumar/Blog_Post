@@ -23,6 +23,7 @@ router.post("/", middleware.isLoggedIn, function (req, res) {
         } else {
             Comment.create(req.body.comment, function (err, comment) {
                 if (err) {
+                    req.flash("error", "Something Went Wrong!");
                     console.log(err);
                 } else {
                     //add username d to comment
@@ -57,6 +58,7 @@ router.put("/:comment_id", middleware.checkCommnentAuthorization, function (req,
         if (err) {
             res.redirect("back");
         } else {
+            req.flash("success", "Comment Updated Successfully")
             res.redirect("/blogs/" + req.params.id);
         }
     });
@@ -68,7 +70,7 @@ router.delete("/:comment_id", middleware.checkCommnentAuthorization, function (r
         if (err) {
             console.log("cannot delete" + err);
         } else {
-            console.log("comment Deleted");
+            req.flash("success", "Comment Deleted")
             res.redirect("/blogs/" + req.params.id);
         }
     });

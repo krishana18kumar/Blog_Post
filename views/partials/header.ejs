@@ -12,7 +12,7 @@
 </head>
 
 <body>
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-2">
     <a class="navbar-brand mx-3" href="/">Blog Site <i class="fab fa-readme mx-2"> </i></a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
       aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -48,3 +48,15 @@
       </ul>
     </div>
   </nav>
+  <div class="container">
+    <% if(success && success.length>0){ %>
+    <div class="alert alert-success">
+      <%= success %>
+    </div>
+    <% } %>
+    <% if(error && error.length>0){ %>
+    <div class="alert alert-danger">
+      <%= error %>
+    </div>
+    <% } %>
+  </div>

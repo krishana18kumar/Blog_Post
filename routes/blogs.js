@@ -66,7 +66,7 @@ router.get("/:id", function (req, res) {
 
 //EDIT ROUTE (SHOW FORM TO EDIT A PARTICULAR BLOG POST)
 
-router.get("/:id/edit", isLoggedIn, function (req, res) {
+router.get("/:id/edit", checkBlogAuthorization, function (req, res) {
     Blog.findById(req.params.id, function (err, editBlog) {
         if (err) {
             console.log(err);
@@ -79,7 +79,7 @@ router.get("/:id/edit", isLoggedIn, function (req, res) {
 
 // UPDATE ROUTE (UPDATES A PARTICULAR BLOG)
 
-router.put("/:id", isLoggedIn, function (req, res) {
+router.put("/:id", checkBlogAuthorization, function (req, res) {
     var id = req.params.id;
     Blog.findByIdAndUpdate(id, req.body.blog, function (err, foundBlog) {
         if (err) {
@@ -93,7 +93,7 @@ router.put("/:id", isLoggedIn, function (req, res) {
 
 // DELETE ROUTE (DELETES A PARTICULAAR BLOG)
 
-router.delete("/:id", isLoggedIn, function (req, res) {
+router.delete("/:id", checkBlogAuthorization, function (req, res) {
     Blog.findByIdAndDelete(req.params.id, function (err) {
         if (err) {
             console.log(err);
@@ -112,5 +112,28 @@ function isLoggedIn(req, res, next) {
     }
     res.redirect("/login");
 }
+
+
+// MIDDLEWARE TO CHECK DOES THE BLOG BELONG TO THE USER OR NOT 
+
+function checkBlogAuthorization(req, res, next) {
+    if (req.isAuthenticated()) {
+        Blog.findById(req.params.id, function (err, foundBlog) {
+            if (err) {
+                res.redirect("back");
+            } else {
+                if (foundBlog.author.id.equals(req.user._id)) {
+                    next();
+                } else {
+                    res.redirect("back");
+                }
+            }
+        })
+    } else {
+        res.redirect("back");
+    }
+}
+
+
 
 module.exports = router;

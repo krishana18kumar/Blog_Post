@@ -2,6 +2,7 @@ var express = require("express");
 var router = express.Router({ mergeParams: true });
 var Blog = require("../models/blogs");
 var Comment = require('../models/comment');
+var middleware = require("../middleware/index");
 
 
 // =======================
@@ -9,12 +10,12 @@ var Comment = require('../models/comment');
 // =======================
 
 // NEW COMMENTS ROUTE (SHOWS FORM TO ADD NEW COMMENT)
-router.get("/new", isLoggedIn, function (req, res) {
+router.get("/new", middleware.isLoggedIn, function (req, res) {
     res.render("comments/new", { id: req.params.id });
 });
 
 // CREATE COMMENTS ROUTE (ADD NEW COMMENT TO A PARTICULAR POST)
-router.post("/", isLoggedIn, function (req, res) {
+router.post("/", middleware.isLoggedIn, function (req, res) {
     Blog.findById(req.params.id, function (err, blog) {
         if (err) {
             console.log(err);
@@ -40,7 +41,7 @@ router.post("/", isLoggedIn, function (req, res) {
 
 
 // EDIT ROUTE (SHOW FORM TO EDIT A PARTICULAR COMMENT)
-router.get("/:comment_id/edit", checkCommnentAuthorization, function (req, res) {
+router.get("/:comment_id/edit", middleware.checkCommnentAuthorization, function (req, res) {
     Comment.findById(req.params.comment_id, function (err, foundComment) {
         if (err) {
             console.log(err);
@@ -51,7 +52,7 @@ router.get("/:comment_id/edit", checkCommnentAuthorization, function (req, res) 
 });
 
 // UPDATE COMMENT (UPDATES A PARTICULAR COMMENT)
-router.put("/:comment_id", checkCommnentAuthorization, function (req, res) {
+router.put("/:comment_id", middleware.checkCommnentAuthorization, function (req, res) {
     Comment.findByIdAndUpdate(req.params.comment_id, req.body.comment, function (err, foundComment) {
         if (err) {
             res.redirect("back");
@@ -62,7 +63,7 @@ router.put("/:comment_id", checkCommnentAuthorization, function (req, res) {
 });
 
 //DELETE  ROUTE (DELTES A PARTICULAR COMMENT)
-router.delete("/:comment_id", checkCommnentAuthorization, function (req, res) {
+router.delete("/:comment_id", middleware.checkCommnentAuthorization, function (req, res) {
     Comment.findByIdAndDelete(req.params.comment_id, function (err) {
         if (err) {
             console.log("cannot delete" + err);
@@ -73,33 +74,4 @@ router.delete("/:comment_id", checkCommnentAuthorization, function (req, res) {
     });
 });
 
-// MIDDLEWARE  TO CHECK IS USER LOGGED IN 
-
-function isLoggedIn(req, res, next) {
-    if (req.isAuthenticated()) {
-        return next();
-    }
-    res.redirect("/login");
-}
-
-
-// MIDDLEWARE TO CHECK DOES THE COMMENT BELONG TO THE USER OR NOT 
-
-function checkCommnentAuthorization(req, res, next) {
-    if (req.isAuthenticated()) {
-        Comment.findById(req.params.comment_id, function (err, foundComment) {
-            if (err) {
-                res.redirect("back");
-            } else {
-                if (foundComment.author.id.equals(req.user._id)) {
-                    next();
-                } else {
-                    res.redirect("back");
-                }
-            }
-        })
-    } else {
-        res.redirect("back");
-    }
-}
 module.exports = router;

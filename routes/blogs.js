@@ -1,6 +1,7 @@
 var express = require("express");
 var router = express.Router();
 var Blog = require("../models/blogs");
+var middleware = require("../middleware/index");
 
 
 //================
@@ -22,7 +23,7 @@ router.get("/", function (req, res) {
 
 // CREATE ROUTE (ADD NEW POST TO DATABASE )
 
-router.post("/", isLoggedIn, function (req, res) {
+router.post("/", middleware.isLoggedIn, function (req, res) {
     var title = req.body.title;
     var image = req.body.image;
     var body = req.body.body;
@@ -46,7 +47,7 @@ router.post("/", isLoggedIn, function (req, res) {
 
 // NEW ROUTE (SHOW FORM TO ADD NEW BLOG POST)
 
-router.get("/new", isLoggedIn, function (req, res) {
+router.get("/new", middleware.isLoggedIn, function (req, res) {
     res.render("blogs/new");
 });
 
@@ -66,7 +67,7 @@ router.get("/:id", function (req, res) {
 
 //EDIT ROUTE (SHOW FORM TO EDIT A PARTICULAR BLOG POST)
 
-router.get("/:id/edit", checkBlogAuthorization, function (req, res) {
+router.get("/:id/edit", middleware.checkBlogAuthorization, function (req, res) {
     Blog.findById(req.params.id, function (err, editBlog) {
         if (err) {
             console.log(err);
@@ -79,7 +80,7 @@ router.get("/:id/edit", checkBlogAuthorization, function (req, res) {
 
 // UPDATE ROUTE (UPDATES A PARTICULAR BLOG)
 
-router.put("/:id", checkBlogAuthorization, function (req, res) {
+router.put("/:id", middleware.checkBlogAuthorization, function (req, res) {
     var id = req.params.id;
     Blog.findByIdAndUpdate(id, req.body.blog, function (err, foundBlog) {
         if (err) {
@@ -93,7 +94,7 @@ router.put("/:id", checkBlogAuthorization, function (req, res) {
 
 // DELETE ROUTE (DELETES A PARTICULAAR BLOG)
 
-router.delete("/:id", checkBlogAuthorization, function (req, res) {
+router.delete("/:id", middleware.checkBlogAuthorization, function (req, res) {
     Blog.findByIdAndDelete(req.params.id, function (err) {
         if (err) {
             console.log(err);
@@ -103,37 +104,5 @@ router.delete("/:id", checkBlogAuthorization, function (req, res) {
         }
     });
 });
-
-// MIDDLEWARE  TO CHECK IS USER LOGGED IN 
-
-function isLoggedIn(req, res, next) {
-    if (req.isAuthenticated()) {
-        return next();
-    }
-    res.redirect("/login");
-}
-
-
-// MIDDLEWARE TO CHECK DOES THE BLOG BELONG TO THE USER OR NOT 
-
-function checkBlogAuthorization(req, res, next) {
-    if (req.isAuthenticated()) {
-        Blog.findById(req.params.id, function (err, foundBlog) {
-            if (err) {
-                res.redirect("back");
-            } else {
-                if (foundBlog.author.id.equals(req.user._id)) {
-                    next();
-                } else {
-                    res.redirect("back");
-                }
-            }
-        })
-    } else {
-        res.redirect("back");
-    }
-}
-
-
 
 module.exports = router;

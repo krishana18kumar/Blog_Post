@@ -98,7 +98,7 @@ router.delete("/:id", middleware.checkBlogAuthorization, function (req, res) {
             req.flash("error", "Cannot Delete Blog")
             console.log(err);
         } else {
-            req.flash("success", "Post Delete");
+            req.flash("success", "Post Deleted");
             res.redirect("/blogs");
         }
     });

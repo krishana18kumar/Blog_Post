@@ -23,14 +23,17 @@ router.get("/register", function (req, res) {
 // HANDLE SIGNUP/REGISTER LOGIC 
 
 router.post("/register", function (req, res) {
-    User.register(new User({ email: req.body.email, username: req.body.username }), req.body.password, function (err, user) {
+    User.register(new User({
+        email: req.body.email,
+        username: req.body.username
+    }), req.body.password, function (err, user) {
         if (err) {
             req.flash("error", err.message);
             return res.render("register");
         }
         passport.authenticate("local")(req, res, function () {
-            req.flash("success", " Welcome" + user.username + "Successfully Registered!");
-            res.redirect("back");
+            req.flash("success", " Welcome " + user.username + " Successfully Registered!");
+            res.redirect("/blogs");
         });
     });
 });
@@ -48,8 +51,6 @@ router.post("/login", passport.authenticate("local", {
     successRedirect: "/blogs",
     failureRedirect: "/login"
 }), function (req, res) {
-    req.flash("error", "Invalid Username Or Wrong Password Try Again!");
-    req.flash("success", " Welcome Back " + user.username);
 
 });
 

@@ -23,8 +23,8 @@ var authRoutes = require("./routes/auths");
 //SEED THE DATABASE
 // seedDB();
 
-var databaseUrl = process.env.DATABASEURL || "mongodb: //localhost:27017/blog_post_v1";
-
+// var databaseUrl = process.env.DATABASEURL || "mongodb: //localhost:27017/blog_post_v1";
+var databaseUrl = "mongodb://krishana:25464@blogpost-shard-00-00-x55pp.mongodb.net:27017,blogpost-shard-00-01-x55pp.mongodb.net:27017,blogpost-shard-00-02-x55pp.mongodb.net:27017/test?ssl=true&replicaSet=BlogPost-shard-0&authSource=admin&retryWrites=true&w=majority";
 //app CONFIG
 mongoose.connect(databaseUrl, {
   useNewUrlParser: true,

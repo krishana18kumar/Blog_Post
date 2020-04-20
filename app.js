@@ -23,9 +23,8 @@ var authRoutes = require("./routes/auths");
 //SEED THE DATABASE
 // seedDB();
 
-// var databaseUrl = process.env.DATABASEURL || "mongodb: //localhost:27017/blog_post_v1";
-var databaseUrl = "mongodb://krishana:25464@blogpost-shard-00-00-x55pp.mongodb.net:27017,blogpost-shard-00-01-x55pp.mongodb.net:27017,blogpost-shard-00-02-x55pp.mongodb.net:27017/test?ssl=true&replicaSet=BlogPost-shard-0&authSource=admin&retryWrites=true&w=majority";
-//app CONFIG
+var databaseUrl = process.env.DATABASEURL || "mongodb://localhost:27017/blog_post_v1";
+
 mongoose.connect(databaseUrl, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -70,8 +69,9 @@ app.use("/blogs", blogRoutes);
 app.use("/blogs/:id/comments", commentRoutes);
 app.use("/", authRoutes);
 
+// console.log(process.env.DATABASEURL);
 
-app.listen(process.env.PORT, process.env.IP, function () {
+app.listen(process.env.PORT || 3000, process.env.IP, function () {
   console.log("blog_post_Git_version server has started");
   console.log("Port:3000");
 

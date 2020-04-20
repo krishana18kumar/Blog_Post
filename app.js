@@ -23,13 +23,16 @@ var authRoutes = require("./routes/auths");
 //SEED THE DATABASE
 // seedDB();
 
+var databaseUrl = process.env.DATABASEURL || "mongodb: //localhost:27017/blog_post_v1";
+
 //app CONFIG
-mongoose.connect("mongodb://localhost:27017/blog_post_v1", {
+mongoose.connect(databaseUrl, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useCreateIndex: true,
   useFindAndModify: false
 });
+
 
 app.use(require("express-session")({
   secret: "This is Krishan here",
@@ -39,7 +42,9 @@ app.use(require("express-session")({
 
 app.set("view engine", "ejs");
 app.use(express.static(__dirname + "/public"));
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
 app.use(methodOverride("_method"));
 
 app.use(flash());
@@ -66,7 +71,7 @@ app.use("/blogs/:id/comments", commentRoutes);
 app.use("/", authRoutes);
 
 
-app.listen(3000, function () {
+app.listen(process.env.PORT, process.env.IP, function () {
   console.log("blog_post_Git_version server has started");
   console.log("Port:3000");
 

@@ -7,8 +7,8 @@ Express
 NodeJS
 
 Prerequisites:
-NodeJS - Download and Install Node.js. You can find free NodeJS tutorials at nodeschool.io to get you started.
-MongoDB - Download and Install MongoDB - Make sure it's running on the default port (27017).
+NodeJS - Download and Install Node.js.
+MongoDB - Download and Install MongoDB.
 
 
 Quick Install
@@ -29,6 +29,7 @@ node app.js
 or use this command if you've installed nodemon:
 
 nodemon app.js
+
 3. Then open your browser and go to:
 
 http://localhost:3000

@@ -6,7 +6,10 @@ MongoDB
 Express
 NodeJS
 
-Prerequisites:
+## if you want to see how the blog-Post site looks, you can simply visit this URL :https://blog-post-1234.herokuapp.com/
+* I have deployed the site on heroku, but the site is still in developement phase so, suggestions are most welcomed.
+
+## Prerequisites:
 NodeJS - Download and Install Node.js.
 MongoDB - Download and Install MongoDB.
 
